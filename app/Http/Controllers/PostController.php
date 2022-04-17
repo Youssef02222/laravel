@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 
 class Post {
@@ -64,25 +65,51 @@ class PostController extends Controller
     }
 
     public function store(){
+
         return redirect()->route('posts.index');
     }
 
 
     public function show($postId){
-        return view('posts.show', ['post'=> Post::find($postId)]);
+
+        $post = Post::find($postId);
+        return view('posts.show', ['post'=> $post]);
     }
 
+
     public function edit($postId){
-        return view('posts.create' , ['post'=>Post::find($postId)]);
+        $users = User::all();
+        $post = Post::find($postId);
+        return view('posts.create' , ['post'=>$post, 'users'=> $users]);
+
     }
 
 
     public function destroy($postId) {
+
+        Post::where('id', $postId)->delete();
+        return redirect()->route('posts.index');
+    }
+
+
+    public function restore($postId) {
+        Post::where('id', $postId)->restore();
+        return redirect()->route('posts.index');
+    }
+
+    public function force_destroy($postId) {
+        Post::where('id', $postId)->forceDelete();
+        return redirect()->route('posts.index');
+    }
+
+
+
          Post::delete($postId);
         return redirect()->route('posts.index');    
     }
 
     
+
 
 
 }
