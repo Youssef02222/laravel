@@ -27,6 +27,7 @@
             @if(!isset($post->deleted_at))
             <td class="d-flex">
                 <a href="{{ route('posts.show', ['post' => $post['id']]) }}" class="btn btn-info me-1">View</a>
+                <a href="{{ route('posts.comment', ['id' => $post['id']]) }}" class="btn btn-success me-1">Comments</a>
                 <a href="{{ route('posts.edit', ['post' => $post['id']]) }}" class="btn btn-primary me-1">Edit</a>
                 <form action="{{ route('posts.destroy', ['post'=> $post->id] )}}" method="post">
                   @csrf
@@ -64,3 +65,4 @@
 @section('script')
 <!-- <script src="{{ URL::asset('js/index.js') }}" type="text/javascript"></script> -->
 @endsection
+

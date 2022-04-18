@@ -18,6 +18,9 @@ class Post extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
+    public function commentss() {
+        return $this->belongsTo(Comment::class);
+    }
 
     public function human_readable_date() {
         return Carbon::parse($this->attributes['created_at'])->isoFormat("dddd Do of MMMM YYYY h:mm:ss A");

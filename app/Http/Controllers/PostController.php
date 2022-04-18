@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
 
@@ -13,6 +15,12 @@ class PostController extends Controller
         return view("posts.index", [
             'posts' => $posts
         ]);
+      //  $comments=Comment::all();
+
+    }
+
+    public function comment(){
+
     }
 
     public function paginate($page) {
@@ -28,6 +36,19 @@ class PostController extends Controller
     public function create(){
         $users = User::all();
         return view('posts.create', ['users'=> $users]);
+    }
+    public function createComment(){
+        $comments = Comment::all();
+        $users = User::all();
+        return view('posts.comment', ['comments'=> $comments,'users'=> $users]);
+    }
+
+
+    public function new1($id){
+        $comments = Comment::all();
+        $users = User::all();
+        $post_id=$id;
+        return view('posts.new',['comments'=> $comments,'users'=> $users , 'post_id'=>$post_id],);
     }
 
     public function store(){
@@ -46,14 +67,46 @@ class PostController extends Controller
                 'user_id' => $data['post_creator'],
             ]);
         }
+
         return redirect()->route('posts.index');
     }
 
 
+
+
+    public function storeComment(){
+        $data = request()->all();
+
+
+            Comment::create([
+                'comment' => $data['addcomm'],
+                'user_id'=>$data['post_creator'],
+                'post_id'=>$data['id'],
+
+
+
+
+            ]);
+
+        return redirect()->route('posts.index');
+    }
+
+
+
+
     public function show($postId){
         $post = Post::find($postId);
-        return view('posts.show', ['post'=> $post]);
+        $comments=Comment::all();
+        return view('posts.show',
+            ['post'=> $post,
+                'comments'=>$comments
+
+
+            ]);
+
     }
+
+
 
 
     public function edit($postId){
